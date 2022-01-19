@@ -11,6 +11,8 @@ We provide code for visualizing the connectivity matrices and circular graphs.
 *pls_ICA25d.m* set of scripts includes code that imports and cleans up data similar to *ICA25d.m*. USing the 210 connectivities as predictors (X), and age and delayed memory recall as outcomes (Y), partial least squares PLS regression is ran. Permutation testing n=5,000 is used to test whether the PLS explains a significant amount of variance in the outcome (Y) and bootstrapping is used to test which connectivities show a robust contribution (Z score > 3) to the latent PLS variable.
 
 # 3. Functional connectivities mediate the relationship between mean cortical amyloid-beta and memory recall
-A PLS structural equation model script is used here. PLS-SEM toolbox outputs are provided in the folder called *report_FINAL_BL* for the baseline data and *report_extended_sample* for the extension analysis.
+A PLS structural equation model script is used here (*pls_sem_O3.m*). PLS-SEM toolbox outputs are provided in the folder called *report_FINAL_BL* for the baseline data and *report_extended_sample* for the extension analysis.
 https://www.mathworks.com/matlabcentral/fileexchange/54147-pls-sem-toolbox
 
+# 4. Extension analyses
+Scripts used to run the analyses in points 2. and 3. (i.e. the PLS and PLS-SEM) in the extension sample are called *pls_ICA25d_m.m* and *pls_sem_O3.m*, respectively. 
