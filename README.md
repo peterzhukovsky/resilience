@@ -1,7 +1,7 @@
 This repository contains a set of scripts used to analyze resilience to amyliod-beta accumulation and resilience conferred by education in OASIS-3 cross-sectional data.
 
 # 1. Functional connectivity signatures of resilience conferred by education
-*ICA25d.m* includes scripts that import the data, exclude several participants identified by QC; and run linear models (*fitlm*) to test for the effects of education on pairwise functional connectivity. The functional connectivity variables undergo exclusion of outliers (>3SD from the mean) first to ensure data quality is adequate. 
+*analysis_ICA25d.m* includes scripts that import the data, exclude several participants identified by QC; and run linear models (*fitlm*) to test for the effects of education on pairwise functional connectivity. The functional connectivity variables undergo exclusion of outliers (>3SD from the mean) first to ensure data quality is adequate. 
 
 Next , we use 1,000 permutations to test for significance of the effect of education. Each permutation involves reshuffling the outcome variable (of the 210 functional connectivities). From each permuted model we get a "by chance" F-value which allows us to generate a permutation distribution. 
 
