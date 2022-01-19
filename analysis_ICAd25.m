@@ -47,27 +47,6 @@ ICs_vector=ICs(triu(ones(D),1)==1)';
 %% Education analysis - step 2
 ix=amyloidA.PET_fSUVR_rsf_TOT_CORTMEAN~=0 & abs(clinicalA.delta_AmyloidA)<365 & clinicalA.dx2num==0 & mean_fd<0.1 & (clinicalA.apoe==34|clinicalA.apoe==44|clinicalA.apoe==33);%ix=logical(ones(675,1)); 
 permutations=1000;
-for i=1:length(part_icad25(1,:))
-        allobservations=clean(full_icad25(:,i),3); clin=clinicalA(~isnan(allobservations),:);p=prop_signal(~isnan(allobservations));m=mean_fd(~isnan(allobservations)); a=allobservations(~isnan(allobservations)); 
-        i
-        parfor n = 1:permutations; 
-        permutation_index = randperm(length(a));
-        randomSample = a(permutation_index,:);
-        T=table(clin.Education, clin.risk, clin.cdrcat, clin.Age, clin.M_F,p,m, abs(clin.delta_AmyloidA), randomSample ); %clear clin p m a
-        T.Properties.VariableNames={'edu', 'risk', 'cdrcat', 'Age', 'M_F','prop_signal', 'mean_fd', 'abs_delta_AmyloidA', 'FC'};T=T(ix(~isnan(allobservations)),:);
-        mdl = fitlm(T,'FC~edu+risk+cdrcat+Age+M_F+prop_signal+mean_fd+abs_delta_AmyloidA+Age*M_F'); 
-        anovamdl=anova(mdl); F(1,n)=anovamdl.F(1);
-        end; 
-        F_permedu(i,:)=F;
-  clear T;T=table(clinicalA.Education, clinicalA.risk, clinicalA.cdrcat, clinicalA.Age, clinicalA.M_F,prop_signal,mean_fd, abs(clinicalA.delta_AmyloidA), clean(allobservations,3) ); 
-  T.Properties.VariableNames={'edu', 'risk', 'cdrcat', 'Age', 'M_F','prop_signal', 'mean_fd', 'abs_delta_AmyloidA', 'FC'};T=T(ix,:);
-  mdl = fitlm(T,'FC~edu+risk+cdrcat+Age+M_F+prop_signal+mean_fd+abs_delta_AmyloidA+Age*M_F'); anovamdl=anova(mdl);
-  p_perm_edu(i)=1-sum(anovamdl.F(1)>F_permedu(i,:))/permutations; 
-  Tedu(1,i)=mdl.Coefficients.tStat(2); Pedu(1,i)=mdl.Coefficients.pValue(2);
-end
-square_P_full = zeros(D); square_P_full(triu(ones(D),1)>0) = p_perm_edu; 
-square_T_full = zeros(D); square_T_full(triu(ones(D),1)>0) = Tedu; square_T_full(square_P_full>0.05)=0;
-ICs_vector(p_perm_edu<0.05)
 
 for i=1:length(part_icad25(1,:))
         allobservations=clean(part_icad25(:,i),3); clin=clinicalA(~isnan(allobservations),:);p=prop_signal(~isnan(allobservations));m=mean_fd(~isnan(allobservations)); a=allobservations(~isnan(allobservations)); 
@@ -97,7 +76,7 @@ figure;imagesc(square_T); set(gca,'XTick',[1:21], 'YTick',[1:21]); %clear square
 ids=1:210;figure(131);
 for i=ids(p_perm_edu<0.01)
     j=find(i==ids(p_perm_edu<0.01))
-    allobservations=full_icad25(:,i);
+    allobservations=part_icad25(:,i);
     clear T;T=table(clinicalA.Education, clinicalA.risk, clinicalA.cdrcat, clinicalA.Age, clinicalA.M_F,prop_signal,mean_fd, abs(clinicalA.delta_AmyloidA), clean(allobservations,3) ); 
     T.Properties.VariableNames={'edu', 'risk', 'cdrcat', 'Age', 'M_F','prop_signal', 'mean_fd', 'abs_delta_AmyloidA', 'FC'}; T=T(ix,:);
     mdl = fitlm(T,'FC~edu+risk+cdrcat+Age+M_F+prop_signal+mean_fd+abs_delta_AmyloidA+Age*M_F'); anovamdl=anova(mdl);
